@@ -1,0 +1,241 @@
+/* Existing styles (unchanged, shown for context) */
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.skill-progress {
+    animation: progress 2s ease-in-out forwards;
+}
+
+@keyframes progress {
+    0% {
+        width: 0;
+    }
+}
+
+#back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-link.active {
+    color: #818cf8; /* indigo-400 */
+    position: relative;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #6366f1, #a855f7); /* indigo-500 to purple-500 */
+}
+
+.social-link,
+.contact-info-icon {
+    transition: transform 0.3s ease;
+}
+
+.social-icon-img {
+    display: block;
+    width: 1.5rem; /* 24px, matches w-6 h-6 */
+    height: 1.5rem;
+    object-fit: contain;
+}
+
+.footer-social-img {
+    display: block;
+    width: 1.25rem; /* 20px, matches w-5 h-5 */
+    height: 1.25rem;
+    object-fit: contain;
+}
+
+.footer-social-link {
+    transition: transform 0.2s ease;
+}
+
+#mobile-menu {
+    position: fixed;
+    top: 4rem; /* 64px, matches h-16 of the navigation bar */
+    left: 0;
+    right: 0;
+    z-index: 40; /* Below the navigation bar (z-50) but above hero content (z-10) */
+}
+
+/* Zoom-out effect for buttons and interactive elements */
+a[href^="#"],
+a[href*="github.com"],
+a[href*="linkedin.com"],
+a[href*="leetcode.com"],
+a[href*="fiverr.com"],
+a[href*="credly.com"],
+a[href*="freecodecamp.org"],
+a[href*="udemy.com"],
+a[href*="coursera.org"],
+button[type="submit"],
+#back-to-top {
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease !important;
+}
+
+a[href^="#"]:hover,
+a[href*="github.com"]:hover,
+a[href*="linkedin.com"]:hover,
+a[href*="leetcode.com"]:hover,
+a[href*="fiverr.com"]:hover,
+a[href*="credly.com"]:hover,
+a[href*="freecodecamp.org"]:hover,
+a[href*="udemy.com"]:hover,
+a[href*="coursera.org"]:hover,
+button[type="submit"]:hover,
+#back-to-top:hover {
+    transform: scale(0.95) !important; /* Slight zoom-out effect */
+}
+
+/* Specific tweaks for navigation links */
+.nav-link:hover {
+    transform: scale(0.95) translateY(-2px) !important; /* Slight lift for emphasis */
+    background-image: none !important; /* Prevent gradient */
+}
+
+/* Footer name link */
+footer a[href="#"]:hover {
+    background-image: none !important; /* Prevent gradient */
+    transform: scale(0.95) !important; /* Keep zoom-out */
+}
+
+/* Apply gradient background only to specific buttons */
+a[href^="#"].bg-gradient-to-r:hover,
+button[type="submit"]:hover {
+    background-image: linear-gradient(to right, #4f46e5, #9333ea) !important; /* Indigo-600 to Purple-600 */
+}
+
+/* Social media icons in Contact and Footer sections */
+a[href*="linkedin.com"] .social-icon-img,
+a[href*="github.com"] .social-icon-img,
+a[href*="leetcode.com"] .social-icon-img,
+a[href*="fiverr.com"] .social-icon-img,
+a[href*="credly.com"] .social-icon-img,
+.footer-social-link:hover .footer-social-img {
+    transform: scale(0.95) !important;
+}
+
+/* Ensure existing hover effects (e.g., background, border) remain */
+a[href^="#"]:hover,
+button[type="submit"]:hover {
+    background-image: linear-gradient(to right, #4f46e5, #9333ea) !important; /* Maintain gradient hover */
+}
+
+/* Existing animation styles (unchanged, for context) */
+.slide-content {
+    opacity: 0 !important;
+    transform: scale(1.2) !important;
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out, translate 0.6s ease-out !important;
+}
+
+.slide-content[data-direction="left"] {
+    translate: -100px 0 !important;
+    transform: translateX(-100px) scale(1.2) !important;
+}
+
+.slide-content[data-direction="right"] {
+    translate: 100px 0 !important;
+    transform: translateX(100px) scale(1.2) !important;
+}
+
+.slide-content.slid {
+    opacity: 1 !important;
+    transform: scale(1) translateX(0) !important;
+    translate: 0 0 !important;
+}
+
+/* Certifications section zoom-in animation */
+#certifications .slide-content > div {
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out !important;
+}
+
+#certifications .slide-content > div[data-direction="zoom"] {
+    transform: scale(0.8) !important;
+}
+
+#certifications .slide-content.slid > div {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+#certifications .slide-content.slid > div:nth-child(1) { transition-delay: 0s !important; }
+#certifications .slide-content.slid > div:nth-child(2) { transition-delay: 0.1s !important; }
+#certifications .slide-content.slid > div:nth-child(3) { transition-delay: 0.2s !important; }
+#certifications .slide-content.slid > div:nth-child(4) { transition-delay: 0.3s !important; }
+#certifications .slide-content.slid > div:nth-child(5) { transition-delay: 0.4s !important; }
+
+/* Existing flip card styles (unchanged) */
+.project-card {
+    perspective: 1000px;
+    height: 400px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+.project-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 1rem;
+}
+
+.flip-card-front {
+    transform: rotateY(0deg);
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Ensure no background on hover for desktop nav links */
+.nav-link:hover {
+    background: transparent !important; /* Override any background */
+    background-image: none !important; /* Remove any gradient background */
+}
+
+/* Ensure no background on hover for mobile menu links */
+#mobile-menu a:hover {
+    background: transparent !important; /* Override the hover:bg-slate-700 */
+    background-image: none !important; /* Remove any gradient background */
+}
+
+/* Ensure no background on hover for the NAVA logo */
+a[href="#"].text-indigo-400:hover {
+    background: transparent !important; /* Override any background */
+    background-image: none !important; /* Remove any gradient background */
+}

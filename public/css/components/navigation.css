@@ -1,0 +1,30 @@
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #6366f1;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Override the global hover background for navigation links */
+nav a[href^="#"]:hover {
+    background: transparent !important;
+    background-image: none !important;
+}
+
+/* Specific rule for the NAVA logo */
+nav .text-indigo-400:hover {
+    background: transparent !important;
+    background-image: none !important;
+}
