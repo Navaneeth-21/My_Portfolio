@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(contactForm);
 
       try {
-        const response = await fetch("/contact", {
+        const response = await fetch("/api/contact", {
           method: "POST",
           body: formData,
         });
