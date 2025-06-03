@@ -1,4 +1,4 @@
-// server.js
+// api/index.js
 require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
@@ -11,7 +11,12 @@ const app = express();
 const upload = multer();
 
 // Serve static files (your website's HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
+
 
 // Configure rate limiting (e.g., max 5 requests per hour per IP)
 const contactLimiter = rateLimit({
