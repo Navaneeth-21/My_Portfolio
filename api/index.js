@@ -17,6 +17,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
+// adding cors middleware to allow cross-origin requests
+const cors = require('cors');
+app.use(cors());
 
 // Configure rate limiting (e.g., max 5 requests per hour per IP)
 const contactLimiter = rateLimit({
