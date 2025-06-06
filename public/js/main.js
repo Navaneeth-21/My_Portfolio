@@ -1,4 +1,4 @@
-// main.js
+// public/js/main.js
 document.addEventListener("DOMContentLoaded", () => {
   // Mobile Menu Toggle
   const menuBtn = document.getElementById("menu-btn");
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(contactForm);
 
       try {
-        const response = await fetch("/api/contact", {
+        const response = await fetch("/contact", {
           method: "POST",
           body: formData,
         });

@@ -4,31 +4,23 @@ const express = require('express');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
-const multer = require('multer'); // Add multer
+const multer = require('multer');
+const cors = require('cors');
+
 const app = express();
 
-// Configure multer to parse form data (we're not handling file uploads, so use memory storage)
-const upload = multer();
-
-// Serve static files (your website's HTML, CSS, JS)
+// Middleware
+app.use(cors());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
-
-// adding cors middleware to allow cross-origin requests
-const cors = require('cors');
-app.use(cors());
-
-// Configure rate limiting (e.g., max 5 requests per hour per IP)
+// Route for form submission
 const contactLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000, // 1 hour
-    max: 10, // Limit each IP to 5 requests per hour
+    windowMs: 60 * 60 * 1000,
+    max: 10,
     message: 'Too many requests from this IP, please try again later.',
 });
 
-// Configure Nodemailer (using Gmail)
+const upload = multer();
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -37,25 +29,21 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-// Route to handle form submission with rate limiting
 app.post('/contact', contactLimiter, upload.none(), (req, res) => {
     const { name, email, subject, message } = req.body;
 
-    // Validate required fields
     if (!name || !email || !subject || !message) {
         return res.status(400).json({ success: false, message: 'All fields are required.' });
     }
 
-    // Prepare email content
     const mailOptions = {
-        from: `"${name}" <${process.env.EMAIL_USER}>`, // Use the authenticated Gmail user
+        from: `"${name}" <${process.env.EMAIL_USER}>`,
         to: 'navaneethgade07@gmail.com',
-        replyTo: email, // Allow replies to go to the user's email
+        replyTo: email,
         subject: `New Contact Form Submission: ${subject}`,
         text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`,
     };
 
-    // Send email
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Error sending email:', error);
@@ -66,7 +54,12 @@ app.post('/contact', contactLimiter, upload.none(), (req, res) => {
     });
 });
 
-// Start the server
+// Serve index.html for root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
+
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
