@@ -1,27 +1,29 @@
 {
-  "version": 2,
-  "builds": [
-      {
-          "src": "public/**",
-          "use": "@vercel/static"
-      },
-      {
-          "src": "api/contact.js",
-          "use": "@vercel/node"
-      }
-  ],
-  "routes": [
-      {
-          "src": "/api/contact",
-          "dest": "/api/contact.js",
-          "methods": ["POST"]
-      },
-      {
-          "src": "/(.*)",
-          "dest": "/public/$1",
-          "headers": {
-              "Access-Control-Allow-Origin": "*"
-          }
-      }
-  ]
+    "version": 2,
+    "builds": [
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "api/contact.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/contact",
+            "dest": "/api/contact.js",
+            "methods": ["POST"],
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST",
+                "Access-Control-Allow-Headers": "Content-Type"
+            }
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/$1"
+        }
+    ]
 }

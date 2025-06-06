@@ -5,11 +5,19 @@ const multer = require('multer');
 
 const upload = multer();
 
-// Configure rate limiting
+// Configure rate limiting with custom keyGenerator for Vercel
 const contactLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    max: 10, // Limit each IP to 5 requests per hour
+    max: 10, // Limit each IP to 10 requests per hour
     message: 'Too many requests from this IP, please try again later.',
+    keyGenerator: (req) => {
+        // Use Vercel-specific headers to get client IP
+        const ip = req.headers['x-forwarded-for']?.split(',').shift()?.trim() || 
+                   req.headers['x-vercel-proxied-for'] || 
+                   'unknown';
+        return ip;
+    },
+    skipFailedRequests: true, // Don't count failed requests toward the limit
 });
 
 // Configure Nodemailer
@@ -22,21 +30,35 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = async (req, res) => {
-    // Apply rate limiting (manually invoke middleware)
-    await new Promise((resolve, reject) => {
-        contactLimiter(req, res, (err) => (err ? reject(err) : resolve()));
-    });
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
 
     // Handle only POST requests
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
     }
 
+    // Apply rate limiting
+    try {
+        await new Promise((resolve, reject) => {
+            contactLimiter(req, res, (err) => (err ? reject(err) : resolve()));
+        });
+    } catch (error) {
+        console.error('Rate limit error:', error);
+        return res.status(429).json({ success: false, message: error.message });
+    }
+
     // Parse form data
-    const form = upload.none();
-    await new Promise((resolve, reject) => {
-        form(req, res, (err) => (err ? reject(err) : resolve()));
-    });
+    try {
+        const form = upload.none();
+        await new Promise((resolve, reject) => {
+            form(req, res, (err) => (err ? reject(err) : resolve()));
+        });
+    } catch (error) {
+        console.error('Form parsing error:', error);
+        return res.status(400).json({ success: false, message: 'Failed to parse form data' });
+    }
 
     const { name, email, subject, message } = req.body;
 
